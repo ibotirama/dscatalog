@@ -25,7 +25,7 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		
-		return ResponseEntity.ok().body(err);
+		return ResponseEntity.status(status).body(err);
 	}
 
 	@ExceptionHandler(DatabaseException.class)
