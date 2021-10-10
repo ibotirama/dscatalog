@@ -38,8 +38,8 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 		Optional<Product> optProduct = repository.findById(id);
-		Product category = optProduct.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new ProductDTO(category, category.getCategories());
+		Product product = optProduct.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		return new ProductDTO(product, product.getCategories());
 
 	}
 
@@ -52,10 +52,10 @@ public class ProductService {
 	}
 
 	@Transactional
-	public ProductDTO update(Long id, ProductDTO categoryDTO) {
+	public ProductDTO update(Long id, ProductDTO productDTO) {
 		try {
 			Product entity = repository.getOne(id);
-			copyDtoToEntity(categoryDTO, entity);
+			copyDtoToEntity(productDTO, entity);
 			entity = repository.save(entity);
 			return new ProductDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -80,8 +80,8 @@ public class ProductService {
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setPrice(dto.getPrice());
 		entity.getCategories().clear();
-		for (CategoryDTO catDto : dto.getCategories()) {
-			Category category = categoryRepository.getOne(catDto.getId());
+		for (CategoryDTO categoryDto : dto.getCategories()) {
+			Category category = categoryRepository.getOne(categoryDto.getId());
 			entity.getCategories().add(category);
 		}
 	}
